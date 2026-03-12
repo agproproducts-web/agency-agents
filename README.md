@@ -24,43 +24,50 @@ Born from a Reddit thread and months of iteration, **The Agency** is a growing c
 
 ## ⚡ Quick Start
 
-### Option 1: Use with Claude Code (Recommended)
+### Step 1: Clone the Repository
 
 ```bash
-# Copy agents to your Claude Code directory
-cp -r agency-agents/* ~/.claude/agents/
-
-# Now activate any agent in your Claude Code sessions:
-# "Hey Claude, activate Frontend Developer mode and help me build a React component"
+git clone https://github.com/msitarzewski/agency-agents.git
+cd agency-agents
 ```
 
-### Option 2: Use as Reference
-
-Each agent file contains:
-- Identity & personality traits
-- Core mission & workflows
-- Technical deliverables with code examples
-- Success metrics & communication style
-
-Browse the agents below and copy/adapt the ones you need!
-
-### Option 3: Use with Other Tools (Cursor, Aider, Windsurf, Gemini CLI, OpenCode)
+### Step 2: Install Agents for Your Tools
 
 ```bash
-# Step 1 -- generate integration files for all supported tools
-./scripts/convert.sh
-
-# Step 2 -- install interactively (auto-detects what you have installed)
+# Recommended — auto-detects your installed tools, validates agent files,
+# and installs with an interactive selector
 ./scripts/install.sh
 
-# Or target a specific tool directly
-./scripts/install.sh --tool cursor
+# Or install for a specific tool directly
+./scripts/install.sh --tool claude-code
 ./scripts/install.sh --tool copilot
+./scripts/install.sh --tool cursor
 ./scripts/install.sh --tool aider
 ./scripts/install.sh --tool windsurf
 ```
 
+The installer runs a security scan on all agent files before copying them to your tool's config directory. Use `--dry-run` to preview what will be installed without writing anything.
+
+For tools that require format conversion (Cursor, Aider, Windsurf, Antigravity, Gemini CLI, OpenCode, OpenClaw), generate the integration files first:
+
+```bash
+./scripts/convert.sh        # generate all formats
+./scripts/install.sh         # then install
+```
+
 See the [Multi-Tool Integrations](#-multi-tool-integrations) section below for full details.
+
+### Step 3: Activate an Agent
+
+In your Claude Code, Cursor, Copilot, or other supported tool session:
+
+```
+Activate Frontend Developer and help me build a React component.
+```
+
+### Alternative: Use as Reference
+
+Each agent file contains identity, personality, workflows, code examples, and success metrics. Browse the agents below and copy/adapt the ones you need — no installation required.
 
 ---
 
@@ -335,7 +342,7 @@ Building worlds, systems, and experiences across every major engine.
 
 ---
 
-### Scenario 5: Paid Media Account Takeover
+### Scenario 4: Paid Media Account Takeover
 
 **Your Team**:
 
@@ -350,7 +357,7 @@ Building worlds, systems, and experiences across every major engine.
 
 ---
 
-### Scenario 4: Full Agency Product Discovery
+### Scenario 5: Full Agency Product Discovery
 
 **Your Team**: All 8 divisions working in parallel on a single mission.
 
@@ -469,17 +476,23 @@ The Agency works natively with Claude Code, and ships conversion + install scrip
 
 ### ⚡ Quick Install
 
-**Step 1 -- Generate integration files:**
+**Step 1 -- Clone the repo:**
+```bash
+git clone https://github.com/msitarzewski/agency-agents.git
+cd agency-agents
+```
+
+**Step 2 -- Generate integration files (required for Cursor, Aider, Windsurf, Antigravity, Gemini CLI, OpenCode, OpenClaw):**
 ```bash
 ./scripts/convert.sh
 ```
 
-**Step 2 -- Install (interactive, auto-detects your tools):**
+**Step 3 -- Install (interactive, auto-detects your tools):**
 ```bash
 ./scripts/install.sh
 ```
 
-The installer scans your system for installed tools, shows a checkbox UI, and lets you pick exactly what to install:
+The installer runs a security scan on all agent files, then shows a checkbox UI to pick your tools:
 
 ```
   +------------------------------------------------+
@@ -513,6 +526,11 @@ The installer scans your system for installed tools, shows a checkbox UI, and le
 **Non-interactive (CI/scripts):**
 ```bash
 ./scripts/install.sh --no-interactive --tool all
+```
+
+**Preview without installing:**
+```bash
+./scripts/install.sh --dry-run
 ```
 
 ---
@@ -743,9 +761,9 @@ Special recognition to the 50+ Redditors who requested this within the first 12 
 
 ## 🚀 Get Started
 
-1. **Browse** the agents above and find specialists for your needs
-2. **Copy** the agents to `~/.claude/agents/` for Claude Code integration
-3. **Activate** agents by referencing them in your Claude conversations
+1. **Clone** the repository: `git clone https://github.com/msitarzewski/agency-agents.git`
+2. **Install** agents for your tools: `./scripts/install.sh` (validates files and auto-detects tools)
+3. **Activate** agents by referencing them in your Claude Code, Cursor, or Copilot sessions
 4. **Customize** agent personalities and workflows for your specific needs
 5. **Share** your results and contribute back to the community
 

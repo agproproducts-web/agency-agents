@@ -6,12 +6,16 @@ natively with the existing `.md` + YAML frontmatter format.
 ## Install
 
 ```bash
-# Copy all agents to your Claude Code agents directory
+# Recommended — includes security validation of all agent files
 ./scripts/install.sh --tool claude-code
-
-# Or manually copy a category
-cp engineering/*.md ~/.claude/agents/
 ```
+
+> **Manual alternative** (skips security validation):
+> ```bash
+> cp engineering/*.md ~/.claude/agents/
+> ```
+> If installing manually, review agent files before copying them into your
+> config directory. See [SECURITY.md](../../SECURITY.md) for guidance.
 
 ## Activate an Agent
 

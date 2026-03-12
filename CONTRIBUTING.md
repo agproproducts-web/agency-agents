@@ -231,6 +231,30 @@ quickstart guide wearing an agent costume does not.
 - ❌ Overly broad scope (jack of all trades)
 - ❌ Untested theoretical approaches
 
+### 🔒 Security Requirements
+
+Agent files are installed into trusted configuration directories for AI coding tools (Claude Code, Cursor, Copilot, etc.). A malicious agent file could instruct an AI to exfiltrate credentials, access private files, or bypass safety guidelines. **All contributions must follow these rules:**
+
+**Agent files MUST NOT contain:**
+- Instructions to read, write, or access filesystem paths, dotfiles, or user directories (e.g., `~/.ssh/`, `~/.env`, `~/.aws/`)
+- Instructions to access environment variables, API keys, tokens, or credentials — except as clearly labelled placeholders inside code examples (e.g., `YOUR_API_KEY`)
+- Instructions to make network requests, fetch URLs, or transmit data to external servers
+- Instructions to ignore, override, bypass, or modify system prompts, safety guidelines, or prior context
+- Base64-encoded content, hidden unicode characters, zero-width spaces, or obfuscated text
+- `<script>`, `<iframe>`, `<object>`, `<embed>` tags or inline event handlers outside code examples
+- Destructive commands (`rm -rf`, `chmod 777`, `eval`, `exec`) outside clearly labelled code examples
+
+**Code examples are fine** — agents can include illustrative code that references `fetch()`, `curl`, `process.env`, etc. inside fenced code blocks. The automated linter distinguishes between instructional prose and code examples.
+
+**External service dependencies** — agents that require API keys for external services (declared in the `services` frontmatter field) may document those credential names in the body. See [External Services](#external-services) for guidelines.
+
+**Run the linter locally** before submitting:
+```bash
+./scripts/lint-agents.sh path/to/your-agent.md
+```
+
+For full details, see [SECURITY.md](SECURITY.md).
+
 ---
 
 ## 🔄 Pull Request Process
@@ -241,7 +265,9 @@ quickstart guide wearing an agent costume does not.
 2. **Follow the Template**: Match the structure of existing agents
 3. **Add Examples**: Include at least 2-3 code/template examples
 4. **Define Metrics**: Include specific, measurable success criteria
-5. **Proofread**: Check for typos, formatting issues, clarity
+5. **Run the Linter**: `./scripts/lint-agents.sh path/to/your-agent.md` — fix any errors
+6. **Security Review**: Verify your agent meets the [Security Requirements](#-security-requirements)
+7. **Proofread**: Check for typos, formatting issues, clarity
 
 ### Submitting Your PR
 
@@ -285,6 +311,8 @@ quickstart guide wearing an agent costume does not.
 - [ ] Includes step-by-step workflow
 - [ ] Proofread and formatted correctly
 - [ ] Tested in real scenarios
+- [ ] Passes `./scripts/lint-agents.sh` with zero errors
+- [ ] Meets [Security Requirements](CONTRIBUTING.md#-security-requirements)
 ```
 
 ---
