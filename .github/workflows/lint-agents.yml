@@ -1,5 +1,4 @@
 name: Lint Agent Files
-
 on:
   pull_request:
     paths:
@@ -15,7 +14,7 @@ on:
       - 'support/**'
       - 'spatial-computing/**'
       - 'specialized/**'
-
+      - 'scripts/lint-agents.sh'
 jobs:
   lint:
     name: Validate agent frontmatter and structure
@@ -24,14 +23,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Get changed agent files
         id: changed
+        env:
+          BASE_REF: ${{ github.base_ref }}
         run: |
-          FILES=$(git diff --name-only --diff-filter=ACMR origin/${{ github.base_ref }}...HEAD -- \
-            'design/**/*.md' 'engineering/**/*.md' 'game-development/**/*.md' 'marketing/**/*.md' 'paid-media/**/*.md' 'sales/**/*.md' 'product/**/*.md' \
-            'project-management/**/*.md' 'testing/**/*.md' 'support/**/*.md' \
-            'spatial-computing/**/*.md' 'specialized/**/*.md')
+          FILES=$(git diff --name-only --diff-filter=ACMR "origin/${BASE_REF}...HEAD" -- \
+            'design/**/*.md' 'engineering/**/*.md' 'game-development/**/*.md' \
+            'marketing/**/*.md' 'paid-media/**/*.md' 'sales/**/*.md' \
+            'product/**/*.md' 'project-management/**/*.md' 'testing/**/*.md' \
+            'support/**/*.md' 'spatial-computing/**/*.md' 'specialized/**/*.md')
           {
             echo "files<<ENDOFLIST"
             echo "$FILES"
@@ -43,7 +44,20 @@ jobs:
             echo "Changed files:"
             echo "$FILES"
           fi
-
+      - name: Check linter integrity
+        if: steps.changed.outputs.files != ''
+        run: |
+          if [ ! -f scripts/lint-agents.sh ]; then
+            echo "::error::scripts/lint-agents.sh not found"
+            exit 1
+          fi
+          # Verify the linter hasn't been modified in this PR
+          # (prevents PRs that neuter the linter and add a malicious agent simultaneously)
+          if git diff --name-only "origin/${BASE_REF}...HEAD" | grep -q '^scripts/lint-agents.sh$'; then
+            echo "::warning::lint-agents.sh was modified in this PR — requires maintainer review"
+          fi
+        env:
+          BASE_REF: ${{ github.base_ref }}
       - name: Run agent linter
         if: steps.changed.outputs.files != ''
         env:

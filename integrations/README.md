@@ -18,7 +18,14 @@ supported agentic coding tools.
 ## Quick Install
 
 ```bash
-# Install for all detected tools automatically
+# Clone the repo first
+git clone https://github.com/msitarzewski/agency-agents.git
+cd agency-agents
+
+# Generate integration files (required for all tools except Claude Code and Copilot)
+./scripts/convert.sh
+
+# Install for all detected tools automatically (includes security scan)
 ./scripts/install.sh
 
 # Install a specific home-scoped tool
@@ -49,10 +56,11 @@ The Agency was originally designed for Claude Code. Agents work natively
 without conversion.
 
 ```bash
-cp -r <category>/*.md ~/.claude/agents/
-# or install everything at once:
 ./scripts/install.sh --tool claude-code
 ```
+
+> **Manual alternative** (skips security validation):
+> `cp engineering/*.md ~/.claude/agents/`
 
 See [claude-code/README.md](claude-code/README.md) for details.
 
